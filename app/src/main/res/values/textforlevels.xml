@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lvl1text0">Жираф</string>
+    <string name="lvl1text1">Обезьяна</string>
+    <string name="lvl1text2">Лимур</string>
+    <string name="lvl1text3">Тигр</string>
+    <string name="lvl1text4">Кролик</string>
+    <string name="lvl1text5">Кот</string>
+    <string name="lvl1text6">Сабака</string>
+    <string name="lvl1text7">Людовик</string>
+    <string name="lvl1text8">Киборг</string>
+    <string name="lvl1text9">Аист</string>
+</resources>
