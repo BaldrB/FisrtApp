@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -39,6 +40,23 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_registar);
 
         init();
+
+        Button btn_back = (Button)findViewById(R.id.btn_back);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }catch (Exception e) {
+
+                }
+
+            }
+        });
 
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private long backPressedTime;
     private Toast backToast;
 
-    private EditText edName, edSecondName, edEmail;
+    private EditText edName;
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
-    private boolean b = false;
+
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
@@ -48,14 +48,9 @@ public class MainActivity extends AppCompatActivity {
         buttonLevel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataFromDB();
-                try{
 
-                    if (b) {
-                        Intent intent = new Intent(MainActivity.this, GamesLevels.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                try{
+                    getDataFromDB();
 
                 }catch (Exception e) {
 
@@ -90,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         edName = findViewById(R.id.edName);
-        edSecondName = findViewById(R.id.edSecondName);
-        edEmail = findViewById(R.id.edEmail);
 
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
     }
@@ -107,14 +100,15 @@ public class MainActivity extends AppCompatActivity {
                     assert  user != null;
                     System.out.println("l"+user.name+"l l" + edName.getText().toString() + "l");
                     if (user.name.equals(edName.getText().toString())) {
-                        b = true;
-                        System.out.println("data base" + b);
+                        Intent intent = new Intent(MainActivity.this, GamesLevels.class);
+                        startActivity(intent);
+                        finish();
+                        System.out.println("data base true");
                         break;
 
                     }
                     else {
-                        System.out.println("data base" + b);
-                        b = false;
+                        System.out.println("data base false");
                     }
                 }
 
@@ -129,22 +123,21 @@ public class MainActivity extends AppCompatActivity {
         mDataBase.addValueEventListener(vListener);
     }
 
-    public void onClickSave(View view) {
-        String id = mDataBase.getKey();
-        String name = edName.getText().toString();
-        String sec_name = edSecondName.getText().toString();
-        String email = edEmail.getText().toString();
-        NewUser user = new NewUser(id, name, sec_name, email);
-
-        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(sec_name) && !TextUtils.isEmpty(email)) {
-            mDataBase.push().setValue(user);
-            Toast.makeText(this, "Запись добавлена", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(this, "Пустое поле", Toast.LENGTH_SHORT).show();
-        }
-
-    }
+//    public void onClickSave(View view) {
+//        String id = mDataBase.getKey();
+//        String name = edName.getText().toString();
+//
+//        NewUser user = new NewUser(id, name, sec_name, email);
+//
+//        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(sec_name) && !TextUtils.isEmpty(email)) {
+//            mDataBase.push().setValue(user);
+//            Toast.makeText(this, "Запись добавлена", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Toast.makeText(this, "Пустое поле", Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
 
     public void onClickRead(View view) {
         try{
