@@ -75,7 +75,7 @@ public class Register extends AppCompatActivity {
         String name = edName.getText().toString();
         String sec_name = edSecondName.getText().toString();
         String email = edEmail.getText().toString();
-        NewUser user = new NewUser(id, name, sec_name, email);
+        NewUser user = new NewUser(id, name, sec_name, email, 0);
 
         if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(sec_name) && !TextUtils.isEmpty(email)) {
             mDataBase.push().setValue(user);

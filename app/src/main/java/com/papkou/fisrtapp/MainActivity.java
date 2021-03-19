@@ -21,7 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,12 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText edName;
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
-
-
-    private ListView listView;
-    private ArrayAdapter<String> adapter;
-    private List<String> listData;
-    private List<NewUser> listTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +95,11 @@ public class MainActivity extends AppCompatActivity {
                     NewUser user = ds.getValue(NewUser.class);
                     assert  user != null;
                     System.out.println("l"+user.name+"l l" + edName.getText().toString() + "l");
+
                     if (user.name.equals(edName.getText().toString())) {
+
                         Intent intent = new Intent(MainActivity.this, GamesLevels.class);
+                        intent.putExtra(Constant.USER_NAME, user.name);
                         startActivity(intent);
                         finish();
                         System.out.println("data base true");
@@ -122,22 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
         mDataBase.addValueEventListener(vListener);
     }
-
-//    public void onClickSave(View view) {
-//        String id = mDataBase.getKey();
-//        String name = edName.getText().toString();
-//
-//        NewUser user = new NewUser(id, name, sec_name, email);
-//
-//        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(sec_name) && !TextUtils.isEmpty(email)) {
-//            mDataBase.push().setValue(user);
-//            Toast.makeText(this, "Запись добавлена", Toast.LENGTH_SHORT).show();
-//        }
-//        else {
-//            Toast.makeText(this, "Пустое поле", Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
 
     public void onClickRead(View view) {
         try{

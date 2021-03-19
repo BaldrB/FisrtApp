@@ -115,7 +115,6 @@ public class ReadActivity extends AppCompatActivity {
                 i.putExtra(Constant.USER_SECOND, user.sec_name);
                 i.putExtra(Constant.USER_EMAIL, user.email);
                 startActivity(i);
-
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.papkou.fisrtapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,12 +15,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Level1 extends AppCompatActivity {
 
-    public int numGlobal;
+    private int numGlobal = 0;
     public int countText = 0;
+    private String textUser;
+
+    private DatabaseReference mDataBase;
+    private String USER_KEY = "User";
 
     ArrayImg array = new ArrayImg();
 
@@ -28,6 +41,7 @@ public class Level1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level1);
 
+        getIntentMain();
 
         TextView text_levels = findViewById(R.id.text_levels);
         text_levels.setText(R.string.level);
@@ -94,6 +108,7 @@ public class Level1 extends AppCompatActivity {
 
                     if (R.id.btn_otv1 == array.texts2[countText][4]) {
                         countText += 1;
+                        numGlobal += 1;
                         imgGlobal.setImageResource(array.images1[countText]);
                         btn_otv1.setText(array.texts2[countText][0]);
                         btn_otv2.setText(array.texts2[countText][1]);
@@ -104,6 +119,10 @@ public class Level1 extends AppCompatActivity {
                         btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+
+
+                        System.out.println("UP XP User");
+                        getDataFromDB();
                     } else {
                       btn_otv1.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
                     }
@@ -116,12 +135,15 @@ public class Level1 extends AppCompatActivity {
             }
         });
 
+
+
         btn_otv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
                     if (R.id.btn_otv2 == array.texts2[countText][4]) {
                         countText += 1;
+                        numGlobal += 1;
                         imgGlobal.setImageResource(array.images1[countText]);
                         btn_otv1.setText(array.texts2[countText][0]);
                         btn_otv2.setText(array.texts2[countText][1]);
@@ -132,6 +154,10 @@ public class Level1 extends AppCompatActivity {
                         btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+
+
+                        System.out.println("UP XP User");
+                        getDataFromDB();
                     } else {
                         btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
                     }
@@ -150,6 +176,7 @@ public class Level1 extends AppCompatActivity {
                 try{
                     if (R.id.btn_otv3 == array.texts2[countText][4]) {
                         countText += 1;
+                        numGlobal += 1;
                         imgGlobal.setImageResource(array.images1[countText]);
                         btn_otv1.setText(array.texts2[countText][0]);
                         btn_otv2.setText(array.texts2[countText][1]);
@@ -160,9 +187,14 @@ public class Level1 extends AppCompatActivity {
                         btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+
+
+                        System.out.println("UP XP User");
+                        getDataFromDB();
                     } else {
                         btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
                     }
+
 
                 }catch (Exception e) {
 
@@ -178,6 +210,7 @@ public class Level1 extends AppCompatActivity {
                 try{
                     if (R.id.btn_otv4 == array.texts2[countText][4]) {
                         countText += 1;
+                        numGlobal += 1;
                         imgGlobal.setImageResource(array.images1[countText]);
                         btn_otv1.setText(array.texts2[countText][0]);
                         btn_otv2.setText(array.texts2[countText][1]);
@@ -188,9 +221,16 @@ public class Level1 extends AppCompatActivity {
                         btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                         btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+
+                        System.out.println("UP XP User");
+                        getDataFromDB();
                     } else {
                         btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
                     }
+
+
+
+
 
                 }catch (Exception e) {
 
@@ -200,6 +240,59 @@ public class Level1 extends AppCompatActivity {
 
 
 
+    }
+
+    private void getIntentMain(){
+        Intent i = getIntent();
+        if (i != null) {
+            textUser = i.getStringExtra(Constant.USER_NAME);
+        }
+    }
+
+    private void getDataFromDB() {
+
+        ValueEventListener vListener = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("User BD1");
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    NewUser user = ds.getValue(NewUser.class);
+                    assert user != null;
+
+                    if (user.name.equals(textUser)) {
+                        System.out.println("User BD2");
+                        String uid = ds.getKey();
+                        DatabaseReference reference = FirebaseDatabase.getInstance()
+                                .getReference("User")
+                                .child(uid);
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("xpUser", numGlobal);
+                        reference.updateChildren(data, (databaseError, databaseReference) -> {
+                            if (databaseError == null) {
+                                //всё ОК
+                                System.out.println("true 100");
+
+                            } else {
+                                //произошла ошибка. Она тут: databaseError.toException()
+                                System.out.println("false 100");
+                            }
+                        });
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        mDataBase.addValueEventListener(vListener);
     }
 
     //Системная кнопка Назад начало

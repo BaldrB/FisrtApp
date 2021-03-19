@@ -10,6 +10,13 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/bacgraound" />
 
+    <TextView
+        android:id="@+id/textXP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Очки"
+        android:textSize="30dp"/>
+
     <LinearLayout
         android:id="@+id/container1"
         android:layout_width="match_parent"
