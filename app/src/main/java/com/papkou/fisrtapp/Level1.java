@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -99,57 +100,71 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
 
     private void btnMethod(Button btn) {
         try{
-            if (btn.getId() == array.texts2[countText][4]) {
-                countText += 1;
-                numGlobal += 1;
-                imgGlobal.setImageResource(array.images1[countText]);
-                btn_otv1.setText(array.texts2[countText][0]);
-                btn_otv2.setText(array.texts2[countText][1]);
-                btn_otv3.setText(array.texts2[countText][2]);
-                btn_otv4.setText(array.texts2[countText][3]);
+            if(countText < 9) {
+                if (btn.getId() == array.texts2[countText][4]) {
+                    countText += 1;
+                    numGlobal += 1;
+                    imgGlobal.setImageResource(array.images1[countText]);
+                    btn_otv1.setText(array.texts2[countText][0]);
+                    btn_otv2.setText(array.texts2[countText][1]);
+                    btn_otv3.setText(array.texts2[countText][2]);
+                    btn_otv4.setText(array.texts2[countText][3]);
 
-                btn_otv1.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
-                btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
-                btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
-                btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+                    btn_otv1.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+                    btn_otv2.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+                    btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
+                    btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
 
-                System.out.println("UP XP User" + countText);
+                    System.out.println("UP XP User" + countText);
 
-                if (countText > 7) {
+                    if (countText > 7) {
 
-                    System.out.println("10");
-                    System.out.println("User BD2");
+                        System.out.println("10");
+                        System.out.println("User BD2");
 
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance()
-                            .getReference("User")
-                            .child(textUser);
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("xpUser", socre + numGlobal);
+                        DatabaseReference reference = FirebaseDatabase.getInstance()
+                                .getReference("User")
+                                .child(textUser);
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("xpUser", socre + numGlobal);
 
-                    reference.updateChildren(data, (databaseError, databaseReference) -> {
-                        if (databaseError == null) {
-                            //всё ОК
-                            System.out.println("true 100");
+                        reference.updateChildren(data, (databaseError, databaseReference) -> {
+                            if (databaseError == null) {
+                                //всё ОК
+                                System.out.println("true 100");
 
-                        } else {
-                            //произошла ошибка. Она тут: databaseError.toException()
-                            System.out.println("false 100");
-                        }
-                    });
+                            } else {
+                                //произошла ошибка. Она тут: databaseError.toException()
+                                System.out.println("false 100");
+                            }
+                        });
+
+                    }
+
+                } else {
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
+                    System.out.println("UP XP User" + countText);
+                }
+            }else {
+                Toast.makeText(this, "Вы выийграли! получили очков " + numGlobal, Toast.LENGTH_LONG).show();
+                try{
+                    Intent intent = new Intent(Level1.this, GamesLevels.class);
+                    intent.putExtra(Constant.USER_ID, textUser);
+                    startActivity(intent);
+                    finish();
+
+                }catch (Exception e) {
 
                 }
 
-            } else {
-                btn.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
-                System.out.println("UP XP User" + countText);
             }
 
         }catch (Exception e) {
 
         }
-
     }
+
 
     private void getIntentMain(){
         Intent i = getIntent();
@@ -170,6 +185,7 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
     public void onBackPressed(){
         try{
             Intent intent = new Intent(Level1.this, GamesLevels.class);
+            intent.putExtra(Constant.USER_ID, textUser);
             startActivity(intent);
             finish();
 

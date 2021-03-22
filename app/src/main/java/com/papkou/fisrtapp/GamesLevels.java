@@ -58,8 +58,8 @@ public class GamesLevels extends AppCompatActivity {
             }
         });
 
-        TextView textView1 = (TextView)findViewById(R.id.textView1);
-        textView1.setOnClickListener(new View.OnClickListener() {
+        Button btn_start = (Button)findViewById(R.id.btn_start);
+        btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
