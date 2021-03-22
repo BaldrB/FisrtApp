@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         edName = findViewById(R.id.edName);
-
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
     }
 
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     if (user.name.equals(edName.getText().toString())) {
 
                         Intent intent = new Intent(MainActivity.this, GamesLevels.class);
-                        intent.putExtra(Constant.USER_NAME, user.name);
+                        intent.putExtra(Constant.USER_ID, ds.getKey());
                         startActivity(intent);
                         finish();
                         System.out.println("data base true");
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        mDataBase.addValueEventListener(vListener);
+        mDataBase.addListenerForSingleValueEvent(vListener);
     }
 
     public void onClickRead(View view) {

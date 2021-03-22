@@ -73,7 +73,7 @@ public class ReadActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     NewUser user = ds.getValue(NewUser.class);
                     assert  user != null;
-                    listData.add(user.name);
+                    listData.add(user.name + "  " + user.xpUser);
                     listTemp.add(user);
                 }
 
@@ -114,6 +114,7 @@ public class ReadActivity extends AppCompatActivity {
                 i.putExtra(Constant.USER_NAME, user.name);
                 i.putExtra(Constant.USER_SECOND, user.sec_name);
                 i.putExtra(Constant.USER_EMAIL, user.email);
+                i.putExtra(Constant.USER_XP, String.valueOf(user.xpUser));
                 startActivity(i);
             }
         });

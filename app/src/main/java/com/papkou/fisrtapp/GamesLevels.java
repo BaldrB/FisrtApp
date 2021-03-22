@@ -24,6 +24,7 @@ public class GamesLevels extends AppCompatActivity {
 
     private TextView textXP;
     private String textUser;
+    private String socre;
 
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
@@ -63,7 +64,8 @@ public class GamesLevels extends AppCompatActivity {
             public void onClick(View v) {
                 try{
                     Intent intent = new Intent(GamesLevels.this, Level1.class);
-                    intent.putExtra(Constant.USER_NAME, textUser);
+                    intent.putExtra(Constant.USER_ID, textUser);
+                    intent.putExtra(Constant.USER_XP, socre);
                     startActivity(intent);
                     finish();
 
@@ -78,14 +80,14 @@ public class GamesLevels extends AppCompatActivity {
 
     private void init() {
         textXP = (TextView)findViewById(R.id.textXP);
-
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
+
     }
 
     private void getIntentMain(){
         Intent i = getIntent();
         if (i != null) {
-            textUser = i.getStringExtra(Constant.USER_NAME);
+            textUser = i.getStringExtra(Constant.USER_ID);
         }
     }
 
@@ -99,9 +101,10 @@ public class GamesLevels extends AppCompatActivity {
                     NewUser user = ds.getValue(NewUser.class);
                     assert  user != null;
 
-                    if (user.name.equals(textUser)) {
+                    if (ds.getKey().equals(textUser)) {
                         System.out.println("XPUser " + user.xpUser);
                         textXP.setText(Integer.toString(user.xpUser));
+                        socre = String.valueOf(user.xpUser);
                         break;
 
                     }
@@ -116,6 +119,7 @@ public class GamesLevels extends AppCompatActivity {
         };
 
         mDataBase.addValueEventListener(vListener);
+//        mDataBase.removeEventListener(vListener);
     }
 
     //Системная кнопка Назад начало

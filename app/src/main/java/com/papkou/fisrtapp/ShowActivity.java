@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class ShowActivity extends AppCompatActivity {
 
-    private TextView tvName, tvSecond, tvEmail;
+    private TextView tvName, tvSecond, tvEmail, txSocre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class ShowActivity extends AppCompatActivity {
         tvName = (TextView)findViewById(R.id.tvName);
         tvSecond = (TextView)findViewById(R.id.tvSecond);
         tvEmail = (TextView)findViewById(R.id.tvEmail);
+        txSocre = (TextView)findViewById(R.id.txSocre);
     }
 
     private void getIntentMain(){
@@ -35,6 +36,7 @@ public class ShowActivity extends AppCompatActivity {
             tvName.setText(i.getStringExtra(Constant.USER_NAME));
             tvSecond.setText(i.getStringExtra(Constant.USER_SECOND));
             tvEmail.setText(i.getStringExtra(Constant.USER_EMAIL));
+            txSocre.setText(i.getStringExtra(Constant.USER_XP));
         }
     }
 
