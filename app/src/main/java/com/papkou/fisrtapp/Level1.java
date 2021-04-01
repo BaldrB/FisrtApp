@@ -1,14 +1,9 @@
 package com.papkou.fisrtapp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,14 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +23,7 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
     private int numGlobal = 0;
     public int countText = 0;
     private String textUser;
-    private int socre;
+    private int score;
 
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
@@ -44,6 +34,8 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
     Button btn_otv3;
     Button btn_otv4;
     ImageView imgGlobal;
+
+    private int count3 = array.texts2.length;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,15 +87,14 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
         btn_otv3.setOnClickListener(this);
         btn_otv4.setOnClickListener(this);
 
-
     }
 
     private void btnMethod(Button btn) {
         try{
-            if(countText < 9) {
-                if (btn.getId() == array.texts2[countText][4]) {
-                    countText += 1;
-                    numGlobal += 1;
+            if (btn.getId() == array.texts2[countText][4]) {
+                countText += 1;
+                numGlobal += 1;
+                if (countText < count3) {
                     imgGlobal.setImageResource(array.images1[countText]);
                     btn_otv1.setText(array.texts2[countText][0]);
                     btn_otv2.setText(array.texts2[countText][1]);
@@ -115,19 +106,19 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
                     btn_otv3.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
                     btn_otv4.setBackgroundTintList(getResources().getColorStateList(R.color.withe_btn));
 
-                    System.out.println("UP XP User" + countText);
+                    System.out.println("Верный ответ " + countText);
 
-                    if (countText > 7) {
-
+                } else {
+                    Toast.makeText(this, "Вы выийграли! получили очков " + numGlobal, Toast.LENGTH_LONG).show();
+                    try{
                         System.out.println("10");
                         System.out.println("User BD2");
-
 
                         DatabaseReference reference = FirebaseDatabase.getInstance()
                                 .getReference("User")
                                 .child(textUser);
                         Map<String, Object> data = new HashMap<>();
-                        data.put("xpUser", socre + numGlobal);
+                        data.put("xpUser", score + numGlobal);
 
                         reference.updateChildren(data, (databaseError, databaseReference) -> {
                             if (databaseError == null) {
@@ -140,44 +131,32 @@ public class Level1 extends AppCompatActivity implements View.OnClickListener {
                             }
                         });
 
+                        Intent intent = new Intent(Level1.this, GamesLevels.class);
+                        intent.putExtra(Constant.USER_ID, textUser);
+                        startActivity(intent);
+                        finish();
+
+                    }catch (Exception e) {
                     }
 
-                } else {
-                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
-                    System.out.println("UP XP User" + countText);
-                }
-            }else {
-                Toast.makeText(this, "Вы выийграли! получили очков " + numGlobal, Toast.LENGTH_LONG).show();
-                try{
-                    Intent intent = new Intent(Level1.this, GamesLevels.class);
-                    intent.putExtra(Constant.USER_ID, textUser);
-                    startActivity(intent);
-                    finish();
-
-                }catch (Exception e) {
-
                 }
 
+            } else {
+                btn.setBackgroundTintList(getResources().getColorStateList(R.color.red_btn));
+                System.out.println("Неверный ответ " + countText);
             }
 
         }catch (Exception e) {
-
         }
     }
-
 
     private void getIntentMain(){
         Intent i = getIntent();
         if (i != null) {
             textUser = i.getStringExtra(Constant.USER_ID);
-            socre = Integer.valueOf(i.getStringExtra(Constant.USER_XP));
+            score = Integer.valueOf(i.getStringExtra(Constant.USER_XP));
             System.out.println(textUser);
         }
-    }
-
-    private void getDataFromDB() {
-
-
     }
 
     //Системная кнопка Назад начало

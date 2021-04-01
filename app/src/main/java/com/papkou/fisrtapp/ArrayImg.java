@@ -15,19 +15,6 @@ public class ArrayImg {
             R.drawable.level_q_10,
     };
 
-    final int[] texts1 = {
-            R.string.lvl1text0,
-            R.string.lvl1text1,
-            R.string.lvl1text2,
-            R.string.lvl1text3,
-            R.string.lvl1text4,
-            R.string.lvl1text5,
-            R.string.lvl1text6,
-            R.string.lvl1text7,
-            R.string.lvl1text8,
-            R.string.lvl1text9
-    };
-
     final int[][] texts2 = {
             {R.string.lvl1text0, R.string.lvl1text0, R.string.lvl1text0, R.string.lvl1text0, R.id.btn_otv1},
             {R.string.lvl1text1, R.string.lvl1text0, R.string.lvl1text0, R.string.lvl1text0, R.id.btn_otv1},
