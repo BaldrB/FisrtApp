@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(edLogin.getText().toString()) && !TextUtils.isEmpty(edPassword.getText().toString())) {
             System.out.println(edLogin.getText().toString() + "   " + edPassword.getText().toString());
 
-            mAuth.signInWithEmailAndPassword(edLogin.getText().toString(), edPassword.getText().toString())
+            mAuth.createUserWithEmailAndPassword(edLogin.getText().toString(), edPassword.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
